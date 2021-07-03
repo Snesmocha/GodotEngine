@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Flash.ogg-284be7d8e6767fc052dc1650e8288917.oggstr"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/Flash.ogg"
+dest_files=[ "res://.import/Flash.ogg-284be7d8e6767fc052dc1650e8288917.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

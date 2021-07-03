@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bolt.wav-01103592dd5401a35088b90e8d9ecda5.sample"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/bolt.wav"
+dest_files=[ "res://.import/bolt.wav-01103592dd5401a35088b90e8d9ecda5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

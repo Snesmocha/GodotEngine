@@ -23,6 +23,11 @@ export var state = 0
 func _physics_process(delta):
 #	debug()
 	match state:
+		0:
+			
+			Heart.self_modulate = Color(1,0,0)
+			Heart.rotation_degrees = 90
+		
 		1:
 			redsoul(delta)
 		2:

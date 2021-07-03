@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/GasterBlast.ogg-c287437faf1a1db653ae0031cd5f3456.oggstr"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/GasterBlast.ogg"
+dest_files=[ "res://.import/GasterBlast.ogg-c287437faf1a1db653ae0031cd5f3456.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

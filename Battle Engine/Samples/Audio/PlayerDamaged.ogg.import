@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/PlayerDamaged.ogg-34913003fd85393483aad46fc106e3b3.oggstr"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/PlayerDamaged.ogg"
+dest_files=[ "res://.import/PlayerDamaged.ogg-34913003fd85393483aad46fc106e3b3.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

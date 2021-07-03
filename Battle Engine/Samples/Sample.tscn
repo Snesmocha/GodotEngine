@@ -1,0 +1,87 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Battle Engine/Samples/Audio/GasterBlast.ogg" type="AudioStream" id=1]
+[ext_resource path="res://Battle Engine/Samples/Audio/MenuCursor.ogg" type="AudioStream" id=2]
+[ext_resource path="res://Battle Engine/Samples/Audio/BattleText.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Battle Engine/Samples/Audio/HeartShatter.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Battle Engine/Samples/Audio/mus_zz_megalovania.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Battle Engine/Samples/Audio/PlayerFight.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Battle Engine/Samples/Audio/GasterBlaster.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Battle Engine/Samples/Audio/GasterBlast2.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Battle Engine/Samples/Audio/Ding.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Battle Engine/Samples/Audio/MenuSelect.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Battle Engine/Samples/Audio/HeartSplit.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Battle Engine/Samples/Audio/SansSpeak.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Battle Engine/Samples/Audio/PlayerDamaged.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Battle Engine/Samples/Audio/Warning.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Battle Engine/Samples/Audio/PlayerHeal.ogg" type="AudioStream" id=15]
+[ext_resource path="res://Battle Engine/Samples/Audio/Slam.ogg" type="AudioStream" id=16]
+[ext_resource path="res://Battle Engine/Samples/Audio/BoneStab.ogg" type="AudioStream" id=17]
+[ext_resource path="res://Battle Engine/Samples/Audio/Flash.ogg" type="AudioStream" id=18]
+[ext_resource path="res://Battle Engine/Samples/Sample.gd" type="Script" id=19]
+[ext_resource path="res://Battle Engine/Samples/Audio/slash.wav" type="AudioStream" id=20]
+[ext_resource path="res://Battle Engine/Samples/Audio/bolt.wav" type="AudioStream" id=21]
+
+[node name="Sample" type="Node"]
+script = ExtResource( 19 )
+
+[node name="BattleText" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="BoneStab" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+
+[node name="Ding" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="Flash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
+
+[node name="GasterBlast2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="GasterBlast" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+
+[node name="GasterBlaster" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="HeartShatter" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="HeartSplit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="MenuCursor" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[node name="MenuSelect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="mus_zz_megalovania" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="PlayerDamaged" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+
+[node name="PlayerFight" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="PlayerHeal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+
+[node name="SansSpeak" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="Slam" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+
+[node name="Slash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 20 )
+pitch_scale = 1.24
+
+[node name="Warning" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+
+[node name="Bolt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 21 )

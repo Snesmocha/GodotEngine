@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/MenuSelect.ogg-d4434063d01fd6c21caef771bddc29ca.oggstr"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/MenuSelect.ogg"
+dest_files=[ "res://.import/MenuSelect.ogg-d4434063d01fd6c21caef771bddc29ca.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

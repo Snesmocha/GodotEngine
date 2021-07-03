@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/slash.wav-3ec15ed8a743db2ca7e82892fa4578b5.sample"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/slash.wav"
+dest_files=[ "res://.import/slash.wav-3ec15ed8a743db2ca7e82892fa4578b5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

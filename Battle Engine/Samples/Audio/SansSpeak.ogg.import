@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/SansSpeak.ogg-776474715ea7f402d1f9c23e358ab33e.oggstr"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/SansSpeak.ogg"
+dest_files=[ "res://.import/SansSpeak.ogg-776474715ea7f402d1f9c23e358ab33e.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

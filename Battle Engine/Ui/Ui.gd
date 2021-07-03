@@ -30,7 +30,7 @@ func levelSet():
 	
 func uiPlacement():
 	
-	print(health.rect_position)
+
 	
 	if kr.visible == false:
 		health.rect_position.x = krBar.margin_right * 3.65
@@ -41,3 +41,5 @@ func uiPlacement():
 #	hpBar.margin_right = Globals.lv/healthPoints * 500
 	
 
+func selection():
+	pass

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/BoneStab.ogg-c51e0b36197a24d87a674edb88b2e8ba.oggstr"
+
+[deps]
+
+source_file="res://Battle Engine/Samples/Audio/BoneStab.ogg"
+dest_files=[ "res://.import/BoneStab.ogg-c51e0b36197a24d87a674edb88b2e8ba.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

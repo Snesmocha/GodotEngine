@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Battle Engine/Ui/Ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://BattleCamera.gd" type="Script" id=2]
@@ -8,10 +8,14 @@
 [ext_resource path="res://Battle Engine/Examples/ExampleNoKR.png" type="Texture" id=6]
 [ext_resource path="res://icon.png" type="Texture" id=7]
 [ext_resource path="res://addons/syndibox-1.7.1/addons/SyndiBox/syndibox.gd" type="Script" id=8]
+[ext_resource path="res://Node.gd" type="Script" id=9]
 [ext_resource path="res://Battle Engine/BattleBox/BattleBox.tscn" type="PackedScene" id=13]
 
-[node name="Node2D" type="Node2D"]
+[node name="Battle" type="Node2D"]
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_vertical_guides_": [  ]
+}
 
 [node name="BattleCamera" type="Camera2D" parent="."]
 offset = Vector2( 320, 240 )
@@ -22,6 +26,8 @@ script = ExtResource( 2 )
 [node name="Tween" type="Tween" parent="BattleCamera"]
 
 [node name="Timer" type="Timer" parent="BattleCamera"]
+
+[node name="Attacks" type="Node2D" parent="."]
 
 [node name="examples" type="CanvasLayer" parent="."]
 
@@ -47,32 +53,86 @@ z_index = -1
 [node name="Player" parent="Entities" instance=ExtResource( 3 )]
 position = Vector2( 288, 280 )
 max_speed = 75
+state = 0
 GravityType = 1
 Gravity = 500
 Jump = Vector2( 20, 200 )
 slam = true
 
 [node name="Enemy" type="Sprite" parent="Entities"]
-position = Vector2( 320, 192 )
+position = Vector2( 320, 157 )
 texture = ExtResource( 7 )
 
 [node name="Menu Text" type="ReferenceRect" parent="."]
-margin_left = 37.0
-margin_top = 255.0
-margin_right = 603.0
-margin_bottom = 383.0
+margin_left = 51.0
+margin_top = 268.0
+margin_right = 584.0
+margin_bottom = 374.0
 border_width = 2.3
 script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-DIALOG = "adsfjlaskfjlk;asdlk;j what the fuck why is this all fucking broken as shit
+DIALOG = "text engine yes
+
+
 "
-AUTO_ADVANCE = true
-FONT = "res://addons/syndibox-1.7.1/addons/SyndiBox/Assets/TextDefault.tres"
+FONT = "res://Fonts/determination mono.tres"
 TEXT_VOICE = "res://addons/syndibox-1.7.1/addons/SyndiBox/Assets/snd_dialog.ogg"
+TEXT_SPEED = 0.001
+ADVANCE_ACTION = ""
 PAUSE_AT_PUNCTUATION = true
-INSTANT_PRINT = true
-CUSTOM_EFFECTS = "res://addons/SyndiBox/custom.gd"
+CUSTOM_EFFECTS = "res://addons/syndibox-1.7.1/addons/SyndiBox/custom.gd"
+
+[node name="masterHelp" type="Node" parent="."]
+script = ExtResource( 9 )
+
+[node name="disclamer" type="Label" parent="masterHelp"]
+margin_left = 640.0
+margin_right = 1016.0
+margin_bottom = 384.0
+rect_clip_content = true
+text = "this will explain how the engine fully works and will function 
+
+all documentation will hopefully be 
+stored in  the
+ readme or a text file in the project
+
+and don't worry, everything here autodeletes when ran"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="text engine" type="Label" parent="masterHelp"]
+margin_left = -560.0
+margin_top = 264.0
+margin_right = -24.0
+margin_bottom = 384.0
+text = "this thing here is the custom text engine, in the text engine thingy, you should be able to edit the text and shit credit to syndibox for this, thank you so fucking much"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="wip" type="Label" parent="masterHelp"]
+margin_top = -149.0
+margin_right = 640.0
+margin_bottom = -29.0
+text = "Attention, this engine is in a work in progress, if you wish to use it, please remember that the documentation is near to non existant, don't bother asking me on discord cause i dont' exist there"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShaderLayerBackground" type="CanvasLayer" parent="."]
+layer = -1
+__meta__ = {
+"_editor_description_": "canvas layers are used as effects layers. when creating effects layers use color rects for screenspace shaders. there will be a folder for use to directly store all of your shader code and stuff so don't worry about that."
+}
+
+[node name="Screenspace CanvasShaders" type="CanvasLayer" parent="."]
+layer = 2
 
 [connection signal="timeout" from="BattleCamera/Timer" to="BattleCamera" method="_on_Timer_timeout"]
