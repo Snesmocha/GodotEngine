@@ -1,0 +1,78 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Battle Engine/Ui/Ui.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BattleCamera.gd" type="Script" id=2]
+[ext_resource path="res://Battle Engine/heart/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Battle Engine/Examples/ExampleKR.png" type="Texture" id=4]
+[ext_resource path="res://test.gd" type="Script" id=5]
+[ext_resource path="res://Battle Engine/Examples/ExampleNoKR.png" type="Texture" id=6]
+[ext_resource path="res://icon.png" type="Texture" id=7]
+[ext_resource path="res://addons/syndibox-1.7.1/addons/SyndiBox/syndibox.gd" type="Script" id=8]
+[ext_resource path="res://Battle Engine/BattleBox/BattleBox.tscn" type="PackedScene" id=13]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="BattleCamera" type="Camera2D" parent="."]
+offset = Vector2( 320, 240 )
+rotating = true
+current = true
+script = ExtResource( 2 )
+
+[node name="Tween" type="Tween" parent="BattleCamera"]
+
+[node name="Timer" type="Timer" parent="BattleCamera"]
+
+[node name="examples" type="CanvasLayer" parent="."]
+
+[node name="ExampleNoKR" type="Sprite" parent="examples"]
+visible = false
+modulate = Color( 1, 1, 1, 0.396078 )
+position = Vector2( 320, 240 )
+texture = ExtResource( 6 )
+
+[node name="ExampleKR" type="Sprite" parent="examples"]
+visible = false
+modulate = Color( 1, 1, 1, 0.396078 )
+position = Vector2( 320, 240 )
+texture = ExtResource( 4 )
+
+[node name="Ui" parent="." instance=ExtResource( 1 )]
+z_index = -1
+
+[node name="BattleBox" parent="." instance=ExtResource( 13 )]
+
+[node name="Entities" type="Node" parent="."]
+
+[node name="Player" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 288, 280 )
+max_speed = 75
+GravityType = 1
+Gravity = 500
+Jump = Vector2( 20, 200 )
+slam = true
+
+[node name="Enemy" type="Sprite" parent="Entities"]
+position = Vector2( 320, 192 )
+texture = ExtResource( 7 )
+
+[node name="Menu Text" type="ReferenceRect" parent="."]
+margin_left = 37.0
+margin_top = 255.0
+margin_right = 603.0
+margin_bottom = 383.0
+border_width = 2.3
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+DIALOG = "adsfjlaskfjlk;asdlk;j what the fuck why is this all fucking broken as shit
+"
+AUTO_ADVANCE = true
+FONT = "res://addons/syndibox-1.7.1/addons/SyndiBox/Assets/TextDefault.tres"
+TEXT_VOICE = "res://addons/syndibox-1.7.1/addons/SyndiBox/Assets/snd_dialog.ogg"
+PAUSE_AT_PUNCTUATION = true
+INSTANT_PRINT = true
+CUSTOM_EFFECTS = "res://addons/SyndiBox/custom.gd"
+
+[connection signal="timeout" from="BattleCamera/Timer" to="BattleCamera" method="_on_Timer_timeout"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/snd_dialog.ogg-86be3b0b1ca014ce5d0834c54dd57d7b.oggstr"
+
+[deps]
+
+source_file="res://addons/syndibox-1.7.1/addons/SyndiBox/Assets/snd_dialog.ogg"
+dest_files=[ "res://.import/snd_dialog.ogg-86be3b0b1ca014ce5d0834c54dd57d7b.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
