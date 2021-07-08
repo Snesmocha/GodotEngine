@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Battle Engine/Ui/Ui.tscn" type="PackedScene" id=1]
-[ext_resource path="res://BattleCamera.gd" type="Script" id=2]
+[ext_resource path="res://Battle Engine/BattleCamera.gd" type="Script" id=2]
 [ext_resource path="res://Battle Engine/heart/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Battle Engine/Examples/ExampleKR.png" type="Texture" id=4]
 [ext_resource path="res://test.gd" type="Script" id=5]
@@ -9,13 +9,31 @@
 [ext_resource path="res://icon.png" type="Texture" id=7]
 [ext_resource path="res://addons/syndibox-1.7.1/addons/SyndiBox/syndibox.gd" type="Script" id=8]
 [ext_resource path="res://Node.gd" type="Script" id=9]
+[ext_resource path="res://Fonts/determination mono.tres" type="DynamicFont" id=10]
+[ext_resource path="res://RichTextLabel.gd" type="Script" id=11]
+[ext_resource path="res://Battle Engine/Examples/item stuff.PNG" type="Texture" id=12]
 [ext_resource path="res://Battle Engine/BattleBox/BattleBox.tscn" type="PackedScene" id=13]
+[ext_resource path="res://TextSystem.gd" type="Script" id=14]
+[ext_resource path="res://DebugMenu.gd" type="Script" id=15]
+[ext_resource path="res://Fonts/Determination Web.ttf" type="DynamicFontData" id=16]
+[ext_resource path="res://System/ExitThing.tscn" type="PackedScene" id=17]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+outline_size = 2
+outline_color = Color( 0, 0, 0, 0.0627451 )
+font_data = ExtResource( 16 )
 
 [node name="Battle" type="Node2D"]
+position = Vector2( 1, -2 )
+z_as_relative = false
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_vertical_guides_": [  ]
 }
+turn = 1
 
 [node name="BattleCamera" type="Camera2D" parent="."]
 offset = Vector2( 320, 240 )
@@ -30,6 +48,7 @@ script = ExtResource( 2 )
 [node name="Attacks" type="Node2D" parent="."]
 
 [node name="examples" type="CanvasLayer" parent="."]
+layer = -1
 
 [node name="ExampleNoKR" type="Sprite" parent="examples"]
 visible = false
@@ -43,46 +62,78 @@ modulate = Color( 1, 1, 1, 0.396078 )
 position = Vector2( 320, 240 )
 texture = ExtResource( 4 )
 
+[node name="item stuff" type="Sprite" parent="examples"]
+visible = false
+modulate = Color( 1, 1, 1, 0.694118 )
+position = Vector2( 335.812, 216.375 )
+scale = Vector2( 0.5, 0.493 )
+texture = ExtResource( 12 )
+
 [node name="Ui" parent="." instance=ExtResource( 1 )]
 z_index = -1
 
 [node name="BattleBox" parent="." instance=ExtResource( 13 )]
 
-[node name="Entities" type="Node" parent="."]
+[node name="NinePatchRect" parent="BattleBox" index="0"]
+margin_left = -289.0
+margin_right = 287.0
 
-[node name="Player" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( 288, 280 )
-max_speed = 75
-state = 0
-GravityType = 1
-Gravity = 500
-Jump = Vector2( 20, 200 )
-slam = true
+[node name="Light2D" parent="BattleBox/NinePatchRect" index="0"]
+position = Vector2( 1055, 111 )
 
-[node name="Enemy" type="Sprite" parent="Entities"]
-position = Vector2( 320, 157 )
-texture = ExtResource( 7 )
+[node name="Tween" parent="BattleBox" index="1"]
+playback_process_mode = 0
 
-[node name="Menu Text" type="ReferenceRect" parent="."]
+[node name="Kinematic" parent="BattleBox" index="3"]
+visible = false
+
+[node name="Right" parent="BattleBox/Kinematic" index="3"]
+position = Vector2( 333, 2 )
+
+[node name="MenuTextSystem" type="CanvasLayer" parent="."]
+layer = 0
+follow_viewport_enable = true
+script = ExtResource( 14 )
+
+[node name="Menu Text For ActnStuff" type="ReferenceRect" parent="MenuTextSystem"]
+visible = false
 margin_left = 51.0
-margin_top = 268.0
-margin_right = 584.0
-margin_bottom = 374.0
+margin_top = 266.0
+margin_right = 592.0
+margin_bottom = 377.0
+border_color = Color( 1, 1, 1, 1 )
 border_width = 2.3
 script = ExtResource( 8 )
 __meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false,
+"_editor_description_": "This is used for actually comminicating to the player, the plan is to have 2 text systems"
+}
+ENABLE_SCROLLBAR = false
+SCROLLBAR_FOLLOW = false
+FONT = "res://Fonts/determination mono.tres"
+TEXT_VOICE = "res://Battle Engine/Samples/Audio/BattleText.ogg"
+ADVANCE_ACTION = ""
+CUSTOM_EFFECTS = "res://addons/syndibox-1.7.1/addons/SyndiBox/custom.gd"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MenuTextSystem"]
+visible = false
+margin_left = 45.0
+margin_top = 264.0
+margin_right = 596.0
+margin_bottom = 376.0
+rect_clip_content = false
+theme = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 10 )
+bbcode_enabled = true
+bbcode_text = "* text engine. . . [rainbow] [tornado]
+eyyyyyyyyyyyyyyyyyyy"
+text = "* text engine. . .  
+eyyyyyyyyyyyyyyyyyyy"
+script = ExtResource( 11 )
+__meta__ = {
 "_edit_use_anchors_": false
 }
-DIALOG = "text engine yes
-
-
-"
-FONT = "res://Fonts/determination mono.tres"
-TEXT_VOICE = "res://addons/syndibox-1.7.1/addons/SyndiBox/Assets/snd_dialog.ogg"
-TEXT_SPEED = 0.001
-ADVANCE_ACTION = ""
-PAUSE_AT_PUNCTUATION = true
-CUSTOM_EFFECTS = "res://addons/syndibox-1.7.1/addons/SyndiBox/custom.gd"
 
 [node name="masterHelp" type="Node" parent="."]
 script = ExtResource( 9 )
@@ -102,6 +153,7 @@ and don't worry, everything here autodeletes when ran"
 align = 1
 autowrap = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -113,6 +165,7 @@ margin_bottom = 384.0
 text = "this thing here is the custom text engine, in the text engine thingy, you should be able to edit the text and shit credit to syndibox for this, thank you so fucking much"
 autowrap = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -123,6 +176,7 @@ margin_bottom = -29.0
 text = "Attention, this engine is in a work in progress, if you wish to use it, please remember that the documentation is near to non existant, don't bother asking me on discord cause i dont' exist there"
 autowrap = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -135,4 +189,44 @@ __meta__ = {
 [node name="Screenspace CanvasShaders" type="CanvasLayer" parent="."]
 layer = 2
 
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Entities" type="Node" parent="."]
+
+[node name="Player" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 282, 285 )
+max_speed = 75
+state = 2
+GravDir = 90
+Gravity = 500
+Jump = Vector2( 20, 200 )
+slam = true
+
+[node name="Enemy" type="Sprite" parent="Entities"]
+position = Vector2( 320, 160 )
+texture = ExtResource( 7 )
+
+[node name="DebugMenu" type="CanvasLayer" parent="."]
+script = ExtResource( 15 )
+
+[node name="Debug" type="RichTextLabel" parent="DebugMenu"]
+margin_right = 280.0
+margin_bottom = 192.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "DebugMenus"
+text = "DebugMenus"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitThing" parent="." instance=ExtResource( 17 )]
+
+[connection signal="changeBoxSize" from="." to="BattleBox" method="_on_Battle_changeBoxSize" flags=6]
+[connection signal="clearText" from="." to="MenuTextSystem" method="_on_Battle_clearText"]
+[connection signal="setText" from="." to="MenuTextSystem" method="_on_Battle_setText"]
 [connection signal="timeout" from="BattleCamera/Timer" to="BattleCamera" method="_on_Timer_timeout"]
+
+[editable path="Ui"]
+[editable path="BattleBox"]

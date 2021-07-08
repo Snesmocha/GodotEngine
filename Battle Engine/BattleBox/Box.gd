@@ -18,7 +18,7 @@ func moveBox(x1,x2,y1,y2, Movetype = 0, Easetype = 3, speed = 0.5, delay = 0):
 	tween.interpolate_property(Box, "margin_right", Box.margin_right, x2, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)
 	tween.interpolate_property(Box, "margin_top", Box.margin_top, y1, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)
 	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, y2, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)	
-	tween.start()
+
 	return [x1,x2,y1,y2]
 	
 #this is used to set back to og position
@@ -27,23 +27,23 @@ func StandardPos(Movetype = 0, Easetype = 3, speed = 0.1):
 	tween.interpolate_property(Box, "margin_right", Box.margin_right, 288, tweenMovementStyle[Movetype], eases[Easetype], speed)
 	tween.interpolate_property(Box, "margin_top", Box.margin_top, -70, tweenMovementStyle[Movetype], eases[Easetype], speed)
 	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, 70, tweenMovementStyle[Movetype], eases[Easetype], speed)	
-	tween.start()
+
 	return 
 	
 	#this should only be used for rotation and that's it, don't be retarded 
-func rotateBoxSet(x1 = 100,y1 = 100, Movetype = 0, Easetype = 3, speed = 0.5):
+func rotateBoxSet(x1 = 100,y1 = 100, Movetype = 0, Easetype = 3, speed = 0.01):
 #	StandardPos()
 	tween.interpolate_property(Box, "margin_left", Box.margin_left, -x1, tweenMovementStyle[Movetype], eases[Easetype], speed)
 	tween.interpolate_property(Box, "margin_right", Box.margin_right, x1, tweenMovementStyle[Movetype], eases[Easetype], speed)
 	tween.interpolate_property(Box, "margin_top", Box.margin_top, -y1, tweenMovementStyle[Movetype], eases[Easetype], speed)
 	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, y1, tweenMovementStyle[Movetype], eases[Easetype], speed)	
-	tween.start()
+
 	return 
 	
 #this is a tween movement, you can also just move the node
-func moveFull(x1 = 320,y1 = 320, Movetype = 0, Easetype = 3, speed = 0.5, delay = 0):
+func moveFull(x1 = 320,y1 = 320, Movetype = 0, Easetype = 3, speed = 0.5):
 	tween.interpolate_property(self, "position", position, Vector2(x1,y1), tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.start()
+
 
 #sets box col pos 
 func boxcolision():
@@ -62,11 +62,18 @@ func boxcolision():
 
 ##################################################################################################################################### Unified aka shared functions
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	boxcolision()
 	velocity = position
+	if changeSize == true:
+		tween.start()
+		changeSize = false
+		
 #	if active == true and combatTick == combatTick:
 #		CombatZoneTick(delta)
 	
 
+var changeSize = false
 
+func _on_Battle_changeBoxSize():
+	changeSize = true

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://team desktop logo/desktop.png" type="Texture" id=1]
 [ext_resource path="res://team desktop logo/image-1.png_21.png" type="Texture" id=2]
-[ext_resource path="res://team.png" type="Texture" id=3]
+[ext_resource path="res://team desktop logo/team.png" type="Texture" id=3]
 [ext_resource path="res://team desktop logo/intro.gd" type="Script" id=4]
 
 [sub_resource type="Shader" id=1]

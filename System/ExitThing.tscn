@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Fonts/determination mono.tres" type="DynamicFont" id=1]
+[ext_resource path="res://System/ExitThing.gd" type="Script" id=2]
+
+[node name="ExitThing" type="CanvasLayer"]
+layer = 6
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 456.0
+margin_right = 636.0
+margin_bottom = 209.0
+custom_fonts/font = ExtResource( 1 )
+text = "if god is 
+dead
+ then 
+tf am i 
+doing here"
+__meta__ = {
+"_edit_use_anchors_": false
+}

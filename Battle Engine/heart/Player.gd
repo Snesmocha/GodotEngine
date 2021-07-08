@@ -21,7 +21,7 @@ export var state = 0
 #basicly physics properties
 #velocity code
 func _physics_process(delta):
-#	debug()
+	debug()
 	match state:
 		0:
 			
@@ -62,6 +62,9 @@ func redsoul(delta):
 
 #variables dedicated to the blue soul cause i don't know how this works
 export(int,0,3) var GravityType : int = 0
+export(int,-360,360) var GravDir = 1
+
+
 enum BlueDirection {
 	LEFT = 0
 	UP = 1
@@ -79,10 +82,11 @@ export var slam = true
 var maxFallSpeed = 5000
 const setGravity = 250
 
+
 #original code from scarm, modifications from me
 func bluesoul(delta):
 	Heart.self_modulate = Color(0,0.25,1)
-	Heart.rotation_degrees = GravityType * 90
+	Heart.rotation_degrees = GravDir
 	
 	var GravDirection = Vector2(cos(Heart.rotation), sin(Heart.rotation))
 	var Floor : Vector2
@@ -115,10 +119,12 @@ func bluesoul(delta):
 	if GravityType == BlueDirection.UP or GravityType == BlueDirection.DOWN:
 		velocity.x = MoveInput.x * HeartSpeed
 		#checks velocity type
+		
 		if InputList[GravityType] and Snap:
 			#opposites shit
 			velocity.y = Jump.y * Floor.y
 			Snap = false
+			
 		else:
 			if (
 				GravityType == BlueDirection.UP and not InputList[GravityType] and not Snap and velocity.y < -Jump.x or
@@ -129,13 +135,15 @@ func bluesoul(delta):
 		
 	if GravityType == BlueDirection.LEFT or GravityType == BlueDirection.RIGHT:
 		velocity.y = MoveInput.y * HeartSpeed
+		
 		if InputList[GravityType] and Snap:
 			velocity.x = Jump.y * Floor.x
 			Snap = false
+			
 		else:
 			if (
 				GravityType == BlueDirection.LEFT and not InputList[GravityType] and not Snap and velocity.x < -Jump.x or
-				GravityType == BlueDirection.RIGHT and not InputList[GravityType] and not Snap and velocity.x > Jump.x
+				GravityType == BlueDirection.RIGHT and not InputList[GravityType] and not Snap and velocity.x > Jump.x 
 				):
 					velocity.x = Jump.x * Floor.x
 	
@@ -161,15 +169,23 @@ func bluesoul(delta):
 
 #no you idiot, don't use this
 func debug():
-	if Input.is_action_just_pressed("w"):
+	if Input.is_key_pressed(KEY_W):
 		GravityType = 3
+		GravDir = 270
 		slam = true
-	if Input.is_action_just_pressed("a"):
+	if Input.is_key_pressed(KEY_A):
 		GravityType = 2
+		GravDir = 180
 		slam = true
-	if Input.is_action_just_pressed("s"):
+	if Input.is_key_pressed(KEY_S):
+		GravDir = 90
 		GravityType = 1
 		slam = true
-	if Input.is_action_just_pressed("d"):
+	if Input.is_key_pressed(KEY_D):
 		GravityType = 0
+		GravDir = 0
 		slam = true
+	if Input.is_action_just_pressed("ui_focus_prev"):
+		state -= 1
+	if Input.is_action_just_pressed("ui_focus_next"):
+		state += 1

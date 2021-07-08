@@ -1,0 +1,63 @@
+Last Updated: v1.7.1
+Color
+The color tag [` allows you to dynamically change the color, mid line.
+You can use hexadecimal HTML notation to assign color or you can use a predefiend shortcut code from the list below. (Note: Named colors or HSL will not work only hex codes) For example these are all valid color codes:
+
+#f03c15 #f03c15 could be written as [`f03c15] or [`#f03c15]
+#c5f015 #c5f015 could be written as [`c5f015] or [`#c5f015]
+#1589F0 #1589F0 could be written as [`1589F0] or [`#1589F0]
+[`0] - Black
+[`1] - Dark Blue
+[`2] - Dark Green
+[`3] - Dark Turquoise
+[`4] - Dark Red
+[`5] - Purple
+[`6] - Gold
+[`7] - Gray
+[`8] - Dark Gray
+[`9] - Blue
+[`a] - Green
+[`b] - Aqua
+[`c] - Red
+[`d] - Light Purple
+[`e] - Yellow
+[`f] - White
+[`r] - Resets the color back to default
+[`#] - Forces a line break without ending the line
+
+Speed
+The speed tag [*x] (where x is the speed or shortcut code value) allows you to change the speed the text 'types' out on the screen.
+You can use '**' to set a custom speed, lower the number the faster the text printing would be. For example, '[**0.1]', '[**1]', '[**1e-3]' are all valid. You can also use the tags listed below for fast reference.
+
+[*1] - Fastest
+[*2] - Fast
+[*3] - "Normal" (i think its p slow tbh)
+[*4] - Slow
+[*5] - Slowest
+[*i] - Start instant print
+[*n] - End instant and return to default speed
+
+If you want all text to print out instantly, consider checking the 'Instant Text' option in the inspector.
+
+Position
+[^t] - Tipsy
+[^d] - Drunk
+[^v] - Vibrate
+[^r] - Resets the effect back to default
+
+Pause
+[s#] - Pause for # seconds
+[t#] - Pause for # tenths of a second
+
+Hide
+[|#] - Hide for # seconds
+[:#] - Hide for # tenths of a second
+
+Font
+An unlimited amount of alternate fonts can be used and configured in the inspector. To swap between them use the font tag [%x], where x is the index of the font you want to switch to. For examples look at the list below
+
+[%0] - Switch to the 1st alternative font
+[%1] - Switch to the 2nd alternative font
+...
+[%99] - Switch to the 100th alternative font
+[%r] - Reset the font back to default
