@@ -1,0 +1,42 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Battle Engine/text/bbcodeengines/pulseTextEffect.gd" type="Script" id=1]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectMatrix.gd" type="Script" id=2]
+[ext_resource path="res://System/textEngine/RichTextLabel.gd" type="Script" id=3]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/textblitterMaybe.gd" type="Script" id=4]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectGhost.gd" type="Script" id=5]
+[ext_resource path="res://Fonts/determination mono.tres" type="DynamicFont" id=6]
+
+[sub_resource type="RichTextEffect" id=1]
+script = ExtResource( 5 )
+
+[sub_resource type="RichTextEffect" id=2]
+script = ExtResource( 2 )
+
+[sub_resource type="RichTextEffect" id=3]
+script = ExtResource( 1 )
+
+[sub_resource type="RichTextEffect" id=4]
+script = ExtResource( 4 )
+
+[node name="TextEngine" type="CanvasLayer"]
+follow_viewport_enable = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 48.0
+margin_top = 272.0
+margin_right = 592.0
+margin_bottom = 368.0
+custom_fonts/normal_font = ExtResource( 6 )
+bbcode_enabled = true
+bbcode_text = "* help me please kanika"
+text = "* help me please kanika"
+custom_effects = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="RichTextLabel"]
+wait_time = 0.01
+autostart = true

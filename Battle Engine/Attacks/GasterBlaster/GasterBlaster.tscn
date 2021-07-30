@@ -1,0 +1,86 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/Fire/004.png" type="Texture" id=1]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/Fire/002.png" type="Texture" id=2]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/Fire/000.png" type="Texture" id=3]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/Default/000.png" type="Texture" id=4]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/Fire/003.png" type="Texture" id=5]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/Fire/001.png" type="Texture" id=6]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/GasterBlaster.gd" type="Script" id=7]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/GasterBlast.png" type="Texture" id=8]
+[ext_resource path="res://Battle Engine/Attacks/GasterBlaster/HitBox.tscn" type="PackedScene" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 1 ), null ],
+"loop": false,
+"name": "fire",
+"speed": 25.0
+} ]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Area2D
+
+export var Damage = 1
+
+func _physics_process(delta: float) -> void:
+	var areas = get_overlapping_areas()
+	for area in areas:
+		if area.is_in_group(\"Player\"):
+			if (
+				get_parent().get_parent().bColor == 0 or
+				get_parent().get_parent().bColor == 1 and area.get_parent().Movement != Vector2.ZERO or 
+				get_parent().get_parent().bColor == 2 and area.get_parent().Movement == Vector2.ZERO
+				):
+				area.Hit(Damage)
+"
+
+[sub_resource type="RectangleShape2D" id=3]
+
+[node name="GasterBlaster" type="Node2D"]
+script = ExtResource( 7 )
+
+[node name="Blaster" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Blaster"]
+position = Vector2( 0.5, 0 )
+scale = Vector2( 2.85, 2.1 )
+
+[node name="GasterBlast" type="Sprite" parent="."]
+visible = false
+position = Vector2( 68, 0 )
+texture = ExtResource( 8 )
+offset = Vector2( 8, 0 )
+
+[node name="GasterBlast2" type="Sprite" parent="."]
+visible = false
+position = Vector2( 32, 0 )
+texture = ExtResource( 8 )
+offset = Vector2( 8, 0 )
+
+[node name="GasterBlast3" type="Sprite" parent="."]
+visible = false
+position = Vector2( 50, 0 )
+texture = ExtResource( 8 )
+offset = Vector2( 8, 0 )
+
+[node name="GasterBlastHit" type="Sprite" parent="."]
+self_modulate = Color( 1, 0, 0, 0 )
+position = Vector2( 86, 0 )
+texture = ExtResource( 8 )
+offset = Vector2( 8, 0 )
+
+[node name="HitBox" parent="GasterBlastHit" instance=ExtResource( 9 )]
+script = SubResource( 2 )
+
+[node name="Collision" parent="GasterBlastHit/HitBox" index="0"]
+position = Vector2( 10, 0 )
+shape = SubResource( 3 )
+
+[editable path="GasterBlastHit/HitBox"]

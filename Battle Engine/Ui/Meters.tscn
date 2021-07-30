@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Battle Engine/Ui/HP bars/HPBar.png" type="Texture" id=1]
+[ext_resource path="res://Battle Engine/Ui/HP bars/KRBar.png" type="Texture" id=2]
+[ext_resource path="res://Battle Engine/Ui/HP bars/HPBackground.png" type="Texture" id=3]
+
+[node name="Meters" type="Node2D"]
+
+[node name="Kr" type="TextureProgress" parent="."]
+margin_right = 111.0
+margin_bottom = 21.0
+value = 100.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 2 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hp" type="TextureProgress" parent="."]
+margin_right = 111.0
+margin_bottom = 21.0
+value = 99.0
+texture_progress = ExtResource( 1 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

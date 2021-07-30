@@ -5,7 +5,6 @@ onready var buttons = []
 onready var battle = get_node("../../")
 
 export var buttonSelection = 0
-export var menuState = 0
 
 
 func _ready():
@@ -15,9 +14,9 @@ func _ready():
 	print(buttons)
 
 func _physics_process(_delta):
-	if battle.turn == 0:
-		setSelection(buttonSelection)
-		interaction()
+
+	setSelection(buttonSelection)
+	interaction()
 	
 
 
@@ -27,17 +26,6 @@ func interaction():
 		buttonSelection -= 1
 	elif Input.is_action_just_pressed("ui_right"):
 		buttonSelection += 1
-	
-	if Input.is_action_just_pressed("ui_accept"):
-		match buttonSelection:
-			0:
-				menuState = 1
-			1:
-				menuState = 2
-			2:
-				menuState = 3
-			3:
-				menuState = 4
 				
 	if buttonSelection < 0:
 		buttonSelection = 3

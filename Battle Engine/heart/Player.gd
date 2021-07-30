@@ -21,6 +21,7 @@ export var state = 0
 #basicly physics properties
 #velocity code
 func _physics_process(delta):
+
 	debug()
 	match state:
 		0:
@@ -32,7 +33,8 @@ func _physics_process(delta):
 			redsoul(delta)
 		2:
 			bluesoul(delta)
-
+		3:
+			orangesoul(delta)
 		
 
 
@@ -153,7 +155,10 @@ func bluesoul(delta):
 	var snapVector = Floor * 32 if Snap else Vector2()
 	velocity = move_and_slide_with_snap(velocity, snapVector, Floor, SlideThreshold)
 	
-	
+
+
+
+
 	#slam system
 	if slam == true:
 		Gravity = maxFallSpeed
@@ -167,6 +172,24 @@ func bluesoul(delta):
 	if JustLanded:
 		Snap = true
 
+
+func orangesoul(delta):
+	Heart.self_modulate = Color(1,0.5,0)
+	Heart.rotation_degrees = 90
+	
+	max_speed = 150
+	
+	input_vector = Vector2( Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), 
+	Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up"))
+	input_vector = input_vector.normalized()
+	
+	if input_vector != Vector2.ZERO:
+		velocity = velocity.move_toward(input_vector * max_speed, accel * delta)
+		
+
+	move_and_slide(velocity)
+	velocity = move_and_slide(velocity)
+		
 #no you idiot, don't use this
 func debug():
 	if Input.is_key_pressed(KEY_W):

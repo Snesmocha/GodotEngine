@@ -3,5 +3,6 @@
 [ext_resource path="res://Fonts/Determination Mono.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 35
+resource_local_to_scene = true
+size = 29
 font_data = ExtResource( 1 )

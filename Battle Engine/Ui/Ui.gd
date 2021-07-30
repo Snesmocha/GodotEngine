@@ -1,30 +1,23 @@
 extends Node2D
 
 
-onready var maxHealth = 16 + 4 * Globals.lv
-onready var healthPoints = maxHealth
 
 onready var health = $"Ui Elements/Health"
 onready var hpBar = $"Meters/Hp"
 onready var krBar = $Meters/Kr
 onready var kr = $"Ui Elements/KR"
 onready var lv = $"Ui Elements/Lv"
-export var ItemSoulPos = [
-	Vector2(72, 289),
-	Vector2(312, 289),
-	Vector2(72, 323),
-	Vector2(312, 323)
-]
+
 
 func _ready() -> void:
 	health.bbcode_text = ""
-	hpBar.max_value = maxHealth
+	hpBar.max_value = Globals.maxHealth
 
 func healthBar():
-	health.bbcode_text = str(healthPoints).pad_zeros(len(str(maxHealth))) + " / " + str(healthPoints)
-	if healthPoints > maxHealth:
-		healthPoints = maxHealth
-	hpBar.value = healthPoints
+	health.bbcode_text = str(Globals.health).pad_zeros(len(str(Globals.maxHealth))) + " / " + str(Globals.health)
+	if Globals.health > Globals.maxHealth:
+		Globals.health = Globals.maxHealth
+	hpBar.value = Globals.health
 	
 func _physics_process(_delta: float) -> void:
 	healthBar()
@@ -35,17 +28,13 @@ func levelSet():
 	lv.bbcode_text = "LV " + str(Globals.lv)
 	
 func uiPlacement():
-	
-
-	
+	kr.position.x = krBar.margin_right + 290
 	if kr.visible == false:
-		health.rect_position.x = krBar.margin_right + 25
+		health.rect_position.x = krBar.margin_right + 290
+		krBar.margin_right = int(20 + (Globals.maxHealth * 1.1))
+		hpBar.margin_right = int(20 + (Globals.maxHealth * 1.1))
+		
 	else:
-		health.rect_position.x = krBar.margin_right + 50
-#
-#	krBar.margin_right = Globals.lv/healthPoints * 1000
-#	hpBar.margin_right = Globals.lv/healthPoints * 500
-	
-
-func selection():
-	pass
+		health.rect_position.x = krBar.margin_right + 320
+		krBar.margin_right = int(20 + (Globals.maxHealth * 0.85))
+		hpBar.margin_right = int(20 + (Globals.maxHealth * 0.85))

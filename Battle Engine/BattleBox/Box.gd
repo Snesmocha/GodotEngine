@@ -60,14 +60,14 @@ func boxcolision():
 #	Colision[3].scale = Colision[2].scale
 
 
+
+
 ##################################################################################################################################### Unified aka shared functions
 
 func _physics_process(_delta: float) -> void:
 	boxcolision()
+
 	velocity = position
-	if changeSize == true:
-		tween.start()
-		changeSize = false
 		
 #	if active == true and combatTick == combatTick:
 #		CombatZoneTick(delta)
@@ -75,5 +75,9 @@ func _physics_process(_delta: float) -> void:
 
 var changeSize = false
 
-func _on_Battle_changeBoxSize():
-	changeSize = true
+func box_changeSize():
+	return tween.start()
+
+
+
+	
