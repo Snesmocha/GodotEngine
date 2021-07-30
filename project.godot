@@ -108,10 +108,18 @@ enabled=PoolStringArray( "res://addons/com.atirut-w.gjapi/plugin.cfg", "res://ad
 
 dspi=false
 splash=false
+auto=false
 
 [gui]
 
 theme/use_hidpi=true
+
+[importer_defaults]
+
+mp3={
+"loop": false,
+"loop_offset": 0
+}
 
 [input]
 

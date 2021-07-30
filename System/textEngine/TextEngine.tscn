@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Battle Engine/text/bbcodeengines/pulseTextEffect.gd" type="Script" id=1]
 [ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectMatrix.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Battle Engine/text/bbcodeengines/textblitterMaybe.gd" type="Script" id=4]
 [ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectGhost.gd" type="Script" id=5]
 [ext_resource path="res://Fonts/determination mono.tres" type="DynamicFont" id=6]
+[ext_resource path="res://trolled (1).mp3" type="AudioStream" id=7]
 
 [sub_resource type="RichTextEffect" id=1]
 script = ExtResource( 5 )
@@ -40,3 +41,6 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="RichTextLabel"]
 wait_time = 0.01
 autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RichTextLabel"]
+stream = ExtResource( 7 )

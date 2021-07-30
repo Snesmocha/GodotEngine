@@ -417,7 +417,6 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="Screenspace CanvasShaders"]
-visible = false
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -465,9 +464,9 @@ __meta__ = {
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 material = SubResource( 8 )
-margin_left = 39.0
-margin_top = 258.0
-margin_right = 603.0
+margin_left = 36.0
+margin_top = 257.0
+margin_right = 602.0
 margin_bottom = 387.0
 __meta__ = {
 "_edit_use_anchors_": false

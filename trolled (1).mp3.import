@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/trolled (1).mp3-19f00a39a18bda31d88ea0c67d09f533.mp3str"
+
+[deps]
+
+source_file="res://trolled (1).mp3"
+dest_files=[ "res://.import/trolled (1).mp3-19f00a39a18bda31d88ea0c67d09f533.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
