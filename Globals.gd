@@ -11,6 +11,7 @@ var framerate = 60
 var fullscreen = 0
 var exit = 0
 
+var items = ["item!","killme","faggot","dumbass","reni cute","kyo femboi", "no seeri", "pubigub pog", "core pog", "underboi p", "russia", "sidoka"]
 
 #player stats
 var lv = 19

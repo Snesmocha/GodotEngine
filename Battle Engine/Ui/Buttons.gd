@@ -5,38 +5,29 @@ onready var buttons = []
 onready var battle = get_node("../../")
 
 export var buttonSelection = 0
+export var enabled = false
+
+signal playerPos(pos)
+signal button(type)
 
 
 func _ready():
 	for i in get_children():
 		buttons.append(i)
 
-	print(buttons)
 
-func _physics_process(_delta):
 
+func _process(_delta):
 	setSelection(buttonSelection)
-	interaction()
 	
-
-
-
-func interaction():
-	if Input.is_action_just_pressed("ui_left"):
-		buttonSelection -= 1
-	elif Input.is_action_just_pressed("ui_right"):
-		buttonSelection += 1
-				
-	if buttonSelection < 0:
-		buttonSelection = 3
-	if buttonSelection > 3:
-		buttonSelection = 0
+	
 	
 	
 func setSelection(current):
+	var ButtonInput = int(Input.is_action_just_pressed("ui_right")) - int(Input.is_action_just_pressed("ui_left"))
 	for i in buttons:
 		i.frame = 0
-	
+		
 	match current:
 		0:
 			buttons[buttonSelection].frame = 1
@@ -46,3 +37,22 @@ func setSelection(current):
 			buttons[buttonSelection].frame = 1
 		3:
 			buttons[buttonSelection].frame = 1
+			
+	if enabled:
+		buttonSelection = posmod(buttonSelection + ButtonInput, buttons.size())
+		emit_signal("playerPos",Vector2(buttons[buttonSelection].position.x - 38, buttons[buttonSelection].position.y))
+		if Input.is_action_just_released("ui_accept"):
+			enabled = false
+			emit_signal("button",buttonSelection)
+			
+			
+		
+	else:
+		buttonSelection = -1
+
+
+
+func _on_item_back(value):
+	buttonSelection = value
+	enabled = true
+	battle.menutext.showDialogue("this is your first encounter\n  don't screw it up",[31],[0.8])

@@ -1,0 +1,634 @@
+[gd_scene load_steps=46 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://trolled (1).mp3" type="AudioStream" id=2]
+[ext_resource path="res://Battle Engine/Examples/ExampleNoKR.png" type="Texture" id=3]
+[ext_resource path="res://Battle Engine/Examples/item stuff.PNG" type="Texture" id=4]
+[ext_resource path="res://Battle Engine/Examples/ExampleKR.png" type="Texture" id=5]
+[ext_resource path="res://Attacks.gd" type="Script" id=6]
+[ext_resource path="res://Battle Engine/BattleBox/masking.gd" type="Script" id=7]
+[ext_resource path="res://Node.gd" type="Script" id=8]
+[ext_resource path="res://DebugMenu.gd" type="Script" id=9]
+[ext_resource path="res://Battle Engine/Ui/Sprites/mercy.png" type="Texture" id=10]
+[ext_resource path="res://Battle Engine/heart/Player.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Battle Engine/BattleBox/BattleBox.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/textblitterMaybe.gd" type="Script" id=13]
+[ext_resource path="res://Battle Engine/Globals/BattleCamera.gd" type="Script" id=14]
+[ext_resource path="res://Battle Engine/Globals/Battle.gd" type="Script" id=15]
+[ext_resource path="res://Fonts/Determination Web.ttf" type="DynamicFontData" id=16]
+[ext_resource path="res://Battle Engine/Ui/Sprites/item.png" type="Texture" id=17]
+[ext_resource path="res://Battle Engine/Ui/Sprites/act.png" type="Texture" id=18]
+[ext_resource path="res://Battle Engine/Ui/HP bars/HP.png" type="Texture" id=19]
+[ext_resource path="res://Battle Engine/Ui/HP bars/KR.png" type="Texture" id=20]
+[ext_resource path="res://Battle Engine/Ui/Sprites/fight.png" type="Texture" id=21]
+[ext_resource path="res://Battle Engine/Ui/Meters.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Battle Engine/Ui/Ui.gd" type="Script" id=23]
+[ext_resource path="res://Battle Engine/Ui/Buttons.gd" type="Script" id=24]
+[ext_resource path="res://Battle Engine/Ui/item.gd" type="Script" id=25]
+[ext_resource path="res://Battle Engine/text/Mars_Needs_Cunnilingus.ttf" type="DynamicFontData" id=26]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectGhost.gd" type="Script" id=27]
+[ext_resource path="res://Fonts/Determination Mono.ttf" type="DynamicFontData" id=28]
+[ext_resource path="res://System/textEngine/RichTextLabel.gd" type="Script" id=29]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/pulseTextEffect.gd" type="Script" id=30]
+[ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectMatrix.gd" type="Script" id=31]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 26 )
+
+[sub_resource type="Shader" id=2]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/VHS-and-CRT-monitor-effect
+
+This shader is under CC0 license. Feel free to use, improve and 
+change this shader according to your needs and consider sharing 
+the modified result to godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+//*** IMPORTANT! ***/ 
+// - If you are using this shader to affect the node it is applied to set 'overlay' to false (unchecked in the instepctor).
+// - If you are using this shader as an overlay, and want the shader to affect the nodes below in the Scene hierarchy,
+//   set 'overlay' to true (checked in the inspector).
+// On Mac there is potentially a bug causing this to not work properly. If that is the case and you want to use the shader as an overlay
+// change all \"overlay ? SCREEN_TEXTURE : TEXTURE\" to only \"SCREEN_TEXTURE\" on lines 129-140, and \"vec2 uv = overlay ? warp(SCREEN_UV) : warp(UV);\"
+// to \"vec2 uv = warp(SCREEN_UV);\" on line 98.
+uniform bool overlay = false;
+
+uniform float scanlines_opacity : hint_range(0.0, 1.0) = 0.4;
+uniform float scanlines_width : hint_range(0.0, 0.5) = 0.25;
+uniform float grille_opacity : hint_range(0.0, 1.0) = 0.3;
+uniform vec2 resolution = vec2(640.0, 480.0); // Set the number of rows and columns the texture will be divided in. Scanlines and grille will make a square based on these values
+
+uniform bool pixelate = true; // Fill each square (\"pixel\") with a sampled color, creating a pixel look and a more accurate representation of how a CRT monitor would work.
+
+uniform bool roll = true;
+uniform float roll_speed = 8.0; // Positive values are down, negative are up
+uniform float roll_size : hint_range(0.0, 100.0) = 15.0;
+uniform float roll_variation : hint_range(0.1, 5.0) = 1.8; // This valie is not an exact science. You have to play around with the value to find a look you like. How this works is explained in the code below.
+uniform float distort_intensity : hint_range(0.0, 0.2) = 0.05; // The distortion created by the rolling effect.
+
+uniform float noise_opacity : hint_range(0.0, 1.0) = 0.4;
+uniform float noise_speed = 5.0; // There is a movement in the noise pattern that can be hard to see first. This sets the speed of that movement.
+
+uniform float static_noise_intensity : hint_range(0.0, 1.0) = 0.06;
+
+uniform float aberration : hint_range(-1.0, 1.0) = 0.03; // Chromatic aberration, a distortion on each color channel.
+uniform float brightness = 1.4; // When adding scanline gaps and grille the image can get very dark. Brightness tries to compensate for that.
+uniform bool discolor = true; // Add a discolor effect simulating a VHS
+
+uniform float warp_amount :hint_range(0.0, 5.0) = 1.0; // Warp the texture edges simulating the curved glass of a CRT monitor or old TV.
+uniform bool clip_warp = false;
+
+uniform float vignette_intensity = 0.4; // Size of the vignette, how far towards the middle it should go.
+uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.5;
+
+// Used by the noise functin to generate a pseudo random value between 0.0 and 1.0
+vec2 random(vec2 uv){
+    uv = vec2( dot(uv, vec2(127.1,311.7) ),
+               dot(uv, vec2(269.5,183.3) ) );
+    return -1.0 + 2.0 * fract(sin(uv) * 43758.5453123);
+}
+
+// Generate a Perlin noise used by the distortion effects
+float noise(vec2 uv) {
+    vec2 uv_index = floor(uv);
+    vec2 uv_fract = fract(uv);
+
+    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+
+    return mix( mix( dot( random(uv_index + vec2(0.0,0.0) ), uv_fract - vec2(0.0,0.0) ),
+                     dot( random(uv_index + vec2(1.0,0.0) ), uv_fract - vec2(1.0,0.0) ), blur.x),
+                mix( dot( random(uv_index + vec2(0.0,1.0) ), uv_fract - vec2(0.0,1.0) ),
+                     dot( random(uv_index + vec2(1.0,1.0) ), uv_fract - vec2(1.0,1.0) ), blur.x), blur.y) * 0.5 + 0.5;
+}
+
+// Takes in the UV and warps the edges, creating the spherized effect
+vec2 warp(vec2 uv){
+	vec2 delta = uv - 0.5;
+	float delta2 = dot(delta.xy, delta.xy);
+	float delta4 = delta2 * delta2;
+	float delta_offset = delta4 * warp_amount;
+	
+	return uv + delta * delta_offset;
+}
+
+// Adds a black border to hide stretched pixel created by the warp effect
+float border (vec2 uv){
+	float radius = min(warp_amount, 0.08);
+	radius = max(min(min(abs(radius * 2.0), abs(1.0)), abs(1.0)), 1e-5);
+	vec2 abs_uv = abs(uv * 2.0 - 1.0) - vec2(1.0, 1.0) + radius;
+	float dist = length(max(vec2(0.0), abs_uv)) / radius;
+	float square = smoothstep(0.96, 1.0, dist);
+	return clamp(1.0 - square, 0.0, 1.0);
+}
+
+// Adds a vignette shadow to the edges of the image
+float vignette(vec2 uv){
+	uv *= 1.0 - uv.xy;
+	float vignette = uv.x * uv.y * 15.0;
+	return pow(vignette, vignette_intensity * vignette_opacity);
+}
+
+void fragment()
+{
+	vec2 uv = overlay ? warp(SCREEN_UV) : warp(UV); // Warp the uv. uv will be used in most cases instead of UV to keep the warping
+	vec2 text_uv = uv;
+	vec2 roll_uv = vec2(0.0);
+	float time = roll ? TIME : 0.0;
+	
+
+	// Pixelate the texture based on the given resolution.
+	if (pixelate)
+	{
+		text_uv = ceil(uv * resolution) / resolution;
+	}
+	
+	// Create the rolling effect. We need roll_line a bit later to make the noise effect.
+	// That is why this runs if roll is true OR noise_opacity is over 0.
+	float roll_line = 0.0;
+	if (roll || noise_opacity > 0.0)
+	{
+		// Create the areas/lines where the texture will be distorted.
+		roll_line = smoothstep(0.3, 0.9, sin(uv.y * roll_size - (time * roll_speed) ) );
+		// Create more lines of a different size and apply to the first set of lines. This creates a bit of variation.
+		roll_line *= roll_line * smoothstep(0.3, 0.9, sin(uv.y * roll_size * roll_variation - (time * roll_speed * roll_variation) ) );
+		// Distort the UV where where the lines are
+		roll_uv = vec2(( roll_line * distort_intensity * (1.-UV.x)), 0.0);
+	}
+	
+	vec4 text;
+	if (roll)
+	{
+		// If roll is true distort the texture with roll_uv. The texture is split up into RGB to 
+		// make some chromatic aberration. We apply the aberration to the red and green channels accorging to the aberration parameter
+		// and intensify it a bit in the roll distortion.
+		text.r = texture(SCREEN_TEXTURE, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
+		text.g = texture(SCREEN_TEXTURE, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1 ).g;
+		text.b = texture(SCREEN_TEXTURE, text_uv + roll_uv).b;
+		text.a = 1.0;
+	}
+	else
+	{
+		// If roll is false only apply the aberration without any distorion. The aberration values are very small so the .1 is only 
+		// to make the slider in the Inspector less sensitive.
+		text.r = texture(SCREEN_TEXTURE, text_uv + vec2(aberration, 0.0) * .1).r;
+		text.g = texture(SCREEN_TEXTURE, text_uv - vec2(aberration, 0.0) * .1).g;
+		text.b = texture(SCREEN_TEXTURE, text_uv).b;
+		text.a = 1.0;
+	}
+	
+	float r = text.r;
+	float g = text.g;
+	float b = text.b;
+	
+	uv = warp(UV);
+	
+	// CRT monitors don't have pixels but groups of red, green and blue dots or lines, called grille. We isolate the texture's color channels 
+	// and divide it up in 3 offsetted lines to show the red, green and blue colors next to each other, with a small black gap between.
+	if (grille_opacity > 0.0){
+		
+		float g_r = smoothstep(0.85, 0.95, abs(sin(uv.x * (resolution.x * 3.14159265))));
+		r = mix(r, r * g_r, grille_opacity);
+		
+		float g_g = smoothstep(0.85, 0.95, abs(sin(1.05 + uv.x * (resolution.x * 3.14159265))));
+		g = mix(g, g * g_g, grille_opacity);
+		
+		float b_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (resolution.x * 3.14159265))));
+		b = mix(b, b * b_b, grille_opacity);
+		
+	}
+	
+	// Apply the grille to the texture's color channels and apply Brightness. Since the grille and the scanlines (below) make the image very dark you
+	// can compensate by increasing the brightness.
+	text.r = clamp(r * brightness, 0.0, 1.0);
+	text.g = clamp(g * brightness, 0.0, 1.0);
+	text.b = clamp(b * brightness, 0.0, 1.0);
+	
+	// Scanlines are the horizontal lines that make up the image on a CRT monitor. 
+	// Here we are actual setting the black gap between each line, which I guess is not the right definition of the word, but you get the idea  
+	float scanlines = 0.5;
+	if (scanlines_opacity > 0.0)
+	{
+		// Same technique as above, create lines with sine and applying it to the texture. Smoothstep to allow setting the line size.
+		scanlines = smoothstep(scanlines_width, scanlines_width + 0.5, abs(sin(uv.y * (resolution.y * 3.14159265))));
+		text.rgb = mix(text.rgb, text.rgb * vec3(scanlines), scanlines_opacity);
+	}
+	
+	// Apply the banded noise.
+	if (noise_opacity > 0.0)
+	{
+		// Generate a noise pattern that is very stretched horizontally, and animate it with noise_speed
+		float noise = smoothstep(0.4, 0.5, noise(uv * vec2(2.0, 200.0) + vec2(10.0, (TIME * (noise_speed))) ) );
+		
+		// We use roll_line (set above) to define how big the noise should be vertically (multiplying cuts off all black parts).
+		// We also add in some basic noise with random() to break up the noise pattern above. The noise is sized according to 
+		// the resolution value set in the inspector. If you don't like this look you can 
+		// change \"ceil(uv * resolution) / resolution\" to only \"uv\" to make it less pixelated. Or multiply resolution with som value
+		// greater than 1.0 to make them smaller.
+		roll_line *= noise * scanlines * clamp(random((ceil(uv * resolution) / resolution) + vec2(TIME * 0.8, 0.0)).x + 0.8, 0.0, 1.0);
+		// Add it to the texture based on noise_opacity
+		text.rgb = clamp(mix(text.rgb, text.rgb + roll_line, noise_opacity), vec3(0.0), vec3(1.0));
+	}
+	
+	// Apply static noise by generating it over the whole screen in the same way as above
+	if (static_noise_intensity > 0.0)
+	{
+		text.rgb += clamp(random((ceil(uv * resolution) / resolution) + fract(TIME)).x, 0.0, 1.0) * static_noise_intensity;
+	}
+	
+	// Apply a black border to hide imperfections caused by the warping.
+	// Also apply the vignette
+	text.rgb *= border(uv);
+	text.rgb *= vignette(uv);
+	// Hides the black border and make that area transparent. Good if you want to add the the texture on top an image of a TV or monitor.
+	if (clip_warp)
+	{
+		text.a = border(uv);
+	}
+	
+	// Apply discoloration to get a VHS look (lower saturation and higher contrast)
+	// You can play with the values below or expose them in the Inspector.
+	float saturation = 0.5;
+	float contrast = 1.2;
+	if (discolor)
+	{
+		// Saturation
+		vec3 greyscale = vec3(text.r + text.g + text.b) / 3.;
+		text.rgb = mix(text.rgb, greyscale, saturation);
+		
+		// Contrast
+		float midpoint = pow(0.5, 2.2);
+		text.rgb = (text.rgb - vec3(midpoint)) * contrast + midpoint;
+	}
+	
+	COLOR = text;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/overlay = true
+shader_param/scanlines_opacity = 0.4
+shader_param/scanlines_width = 0.25
+shader_param/grille_opacity = 0.3
+shader_param/resolution = Vector2( 640, 480 )
+shader_param/pixelate = true
+shader_param/roll = true
+shader_param/roll_speed = 8.0
+shader_param/roll_size = 15.0
+shader_param/roll_variation = 1.8
+shader_param/distort_intensity = 0.05
+shader_param/noise_opacity = 0.4
+shader_param/noise_speed = 5.0
+shader_param/static_noise_intensity = 0.06
+shader_param/aberration = -0.004
+shader_param/brightness = 1.4
+shader_param/discolor = true
+shader_param/warp_amount = 2.301
+shader_param/clip_warp = false
+shader_param/vignette_intensity = 0.4
+shader_param/vignette_opacity = 0.5
+
+[sub_resource type="ShaderMaterial" id=4]
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+outline_size = 2
+outline_color = Color( 0, 0, 0, 0.0627451 )
+font_data = ExtResource( 16 )
+
+[sub_resource type="DynamicFont" id=6]
+resource_local_to_scene = true
+size = 29
+font_data = ExtResource( 28 )
+
+[sub_resource type="RichTextEffect" id=7]
+script = ExtResource( 27 )
+
+[sub_resource type="RichTextEffect" id=8]
+script = ExtResource( 31 )
+
+[sub_resource type="RichTextEffect" id=9]
+script = ExtResource( 30 )
+
+[sub_resource type="RichTextEffect" id=10]
+script = ExtResource( 13 )
+
+[sub_resource type="Shader" id=11]
+code = "shader_type canvas_item;
+
+void fragment(){
+    COLOR = texture(SCREEN_TEXTURE, SCREEN_UV);
+    COLOR.a = texture(TEXTURE, UV).a;
+}"
+
+[sub_resource type="ShaderMaterial" id=12]
+shader = SubResource( 11 )
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+void fragment(){
+    COLOR = texture(SCREEN_TEXTURE, SCREEN_UV);
+    COLOR.a = texture(TEXTURE, UV).a;
+}"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+
+[node name="Battle" type="Node2D"]
+position = Vector2( 1, -2 )
+z_as_relative = false
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_horizontal_guides_": [ -40.0 ],
+"_edit_vertical_guides_": [  ]
+}
+
+[node name="Player" parent="." instance=ExtResource( 11 )]
+position = Vector2( 281, 287 )
+max_speed = 75
+state = 2
+GravityType = 1
+GravDir = 90
+Gravity = 500
+Jump = Vector2( 20, 200 )
+slam = true
+
+[node name="BattleCamera" type="Camera2D" parent="."]
+position = Vector2( 0, 1 )
+offset = Vector2( 320, 240 )
+rotating = true
+current = true
+script = ExtResource( 14 )
+
+[node name="Tween" type="Tween" parent="BattleCamera"]
+
+[node name="Timer" type="Timer" parent="BattleCamera"]
+
+[node name="examples" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ExampleNoKR" type="Sprite" parent="examples"]
+visible = false
+modulate = Color( 1, 1, 1, 0.396078 )
+position = Vector2( 320, 240 )
+texture = ExtResource( 3 )
+
+[node name="ExampleKR" type="Sprite" parent="examples"]
+visible = false
+modulate = Color( 1, 1, 1, 0.396078 )
+position = Vector2( 320, 240 )
+texture = ExtResource( 5 )
+
+[node name="item stuff" type="Sprite" parent="examples"]
+visible = false
+modulate = Color( 1, 1, 1, 0.694118 )
+position = Vector2( 335.812, 216.375 )
+scale = Vector2( 0.5, 0.493 )
+texture = ExtResource( 4 )
+
+[node name="Ui" type="Node2D" parent="."]
+z_index = -1
+script = ExtResource( 23 )
+
+[node name="Buttons" type="Node2D" parent="Ui"]
+script = ExtResource( 24 )
+enabled = true
+
+[node name="fight" type="Sprite" parent="Ui/Buttons"]
+position = Vector2( 87, 453 )
+texture = ExtResource( 21 )
+vframes = 2
+
+[node name="act" type="Sprite" parent="Ui/Buttons"]
+position = Vector2( 240, 453 )
+texture = ExtResource( 18 )
+vframes = 2
+
+[node name="item" type="Sprite" parent="Ui/Buttons"]
+position = Vector2( 400, 453 )
+texture = ExtResource( 17 )
+vframes = 2
+script = ExtResource( 25 )
+
+[node name="mercy" type="Sprite" parent="Ui/Buttons"]
+position = Vector2( 555, 453 )
+texture = ExtResource( 10 )
+vframes = 2
+
+[node name="Ui Elements" type="Node2D" parent="Ui"]
+
+[node name="HP" type="Sprite" parent="Ui/Ui Elements"]
+position = Vector2( 235.456, 410 )
+texture = ExtResource( 19 )
+
+[node name="KR" type="Sprite" parent="Ui/Ui Elements"]
+visible = false
+position = Vector2( 386.435, 410 )
+texture = ExtResource( 20 )
+
+[node name="Name" type="RichTextLabel" parent="Ui/Ui Elements"]
+margin_left = 30.0
+margin_top = 400.0
+margin_right = 112.0
+margin_bottom = 424.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Snes"
+text = "Snes"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lv" type="RichTextLabel" parent="Ui/Ui Elements"]
+margin_left = 117.0
+margin_top = 400.0
+margin_right = 199.0
+margin_bottom = 424.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Lv 19"
+text = "Lv 19"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Health" type="RichTextLabel" parent="Ui/Ui Elements"]
+margin_left = 418.0
+margin_top = 401.0
+margin_right = 523.0
+margin_bottom = 425.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "92 / 92"
+text = "92 / 92"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Meters" parent="Ui" instance=ExtResource( 22 )]
+position = Vector2( 254, 402 )
+
+[node name="BattleBox" parent="." instance=ExtResource( 12 )]
+position = Vector2( 319, 322 )
+
+[node name="masterHelp" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="disclamer" type="Label" parent="masterHelp"]
+margin_left = 640.0
+margin_right = 1016.0
+margin_bottom = 384.0
+rect_clip_content = true
+text = "this will explain how the engine fully works and will function 
+
+all documentation will hopefully be 
+stored in  the
+ readme or a text file in the project
+
+and don't worry, everything here autodeletes when ran"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="text engine" type="Label" parent="masterHelp"]
+margin_left = -560.0
+margin_top = 264.0
+margin_right = -24.0
+margin_bottom = 384.0
+text = "this thing here is the custom text engine, in the text engine thingy, you should be able to edit the text and shit "
+autowrap = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="wip" type="Label" parent="masterHelp"]
+margin_top = -149.0
+margin_right = 640.0
+margin_bottom = -29.0
+text = "Attention, this engine is in a work in progress, if you wish to use it, please remember that the documentation is near to non existant, don't bother asking me on discord cause i dont' exist there"
+autowrap = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ShaderLayerBackground" type="CanvasLayer" parent="."]
+layer = -1
+__meta__ = {
+"_editor_description_": "canvas layers are used as effects layers. when creating effects layers use color rects for screenspace shaders. there will be a folder for use to directly store all of your shader code and stuff so don't worry about that."
+}
+
+[node name="Screenspace CanvasShaders" type="CanvasLayer" parent="."]
+layer = 2
+__meta__ = {
+"_editor_description_": "where you place shaders that modify the full screen"
+}
+
+[node name="ColorRect" type="ColorRect" parent="Screenspace CanvasShaders"]
+visible = false
+material = SubResource( 3 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Entities" type="Node" parent="."]
+
+[node name="Enemy" type="Sprite" parent="Entities"]
+material = SubResource( 4 )
+position = Vector2( 320, 160 )
+texture = ExtResource( 1 )
+
+[node name="DebugMenu" type="CanvasLayer" parent="."]
+layer = 4
+script = ExtResource( 9 )
+
+[node name="Debug" type="RichTextLabel" parent="DebugMenu"]
+margin_right = 280.0
+margin_bottom = 192.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "DebugMenus"
+text = "DebugMenus"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextEngine" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextEngine"]
+margin_left = 48.0
+margin_top = 272.0
+margin_right = 592.0
+margin_bottom = 368.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 6 )
+bbcode_enabled = true
+bbcode_text = "* help me please kanika"
+tab_size = 7
+text = "* help me please kanika"
+scroll_active = false
+custom_effects = [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ]
+script = ExtResource( 29 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="TextEngine/RichTextLabel"]
+wait_time = 0.01
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="TextEngine/RichTextLabel"]
+stream = ExtResource( 2 )
+
+[node name="CanvasLayer" type="BackBufferCopy" parent="."]
+material = SubResource( 12 )
+use_parent_material = true
+copy_mode = 2
+rect = Rect2( 0, 0, 640, 480 )
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource( 14 )
+margin_left = 36.0
+margin_top = 257.0
+margin_right = 602.0
+margin_bottom = 387.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Attacks" type="Node2D" parent="CanvasLayer"]
+script = ExtResource( 6 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[connection signal="timeout" from="BattleCamera/Timer" to="BattleCamera" method="_on_Timer_timeout"]
+[connection signal="button" from="Ui/Buttons" to="Ui/Buttons/item" method="_on_Buttons_button"]
+[connection signal="playerPos" from="Ui/Buttons" to="." method="_on_Buttons_playerPos"]
+[connection signal="back" from="Ui/Buttons/item" to="Ui/Buttons" method="_on_item_back"]
+[connection signal="playerPosition" from="Ui/Buttons/item" to="." method="_on_item_playerPosition"]
+[connection signal="text" from="Ui/Buttons/item" to="TextEngine/RichTextLabel" method="_on_item_text"]

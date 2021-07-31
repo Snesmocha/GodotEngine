@@ -13,36 +13,36 @@ var standardPos = [-288, -70, 288, 70]
 var velocity = Vector2.ZERO
 
 #left, right, up down 
-func moveBox(x1,x2,y1,y2, Movetype = 0, Easetype = 3, speed = 0.5, delay = 0):
-	tween.interpolate_property(Box, "margin_left", Box.margin_left, x1, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)
-	tween.interpolate_property(Box, "margin_right", Box.margin_right, x2, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)
-	tween.interpolate_property(Box, "margin_top", Box.margin_top, y1, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)
-	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, y2, tweenMovementStyle[Movetype], eases[Easetype], speed, delay)	
+func moveBox(x1,x2,y1,y2, Movetype = Tween.TRANS_QUAD, Easetype = Tween.EASE_IN_OUT, speed = 2, delay = 0):
+	tween.interpolate_property(Box, "margin_left", Box.margin_left, speed, x1, Movetype, Easetype,  speed, delay)
+	tween.interpolate_property(Box, "margin_right", Box.margin_right, speed, x2, Movetype, Easetype,  speed, delay)
+	tween.interpolate_property(Box, "margin_top", Box.margin_top, y1, speed, Movetype, Easetype,  speed, delay)
+	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, speed, y2, Movetype, Easetype, delay)	
 
 	return [x1,x2,y1,y2]
 	
 #this is used to set back to og position
-func StandardPos(Movetype = 0, Easetype = 3, speed = 0.1):
-	tween.interpolate_property(Box, "margin_left", Box.margin_left, -288, tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.interpolate_property(Box, "margin_right", Box.margin_right, 288, tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.interpolate_property(Box, "margin_top", Box.margin_top, -70, tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, 70, tweenMovementStyle[Movetype], eases[Easetype], speed)	
+func StandardPos(Movetype = Tween.TRANS_QUAD, Easetype = Tween.EASE_IN_OUT, speed = 2):
+	tween.interpolate_property(Box, "margin_left", Box.margin_left, -288, speed, Movetype, Easetype, speed)
+	tween.interpolate_property(Box, "margin_right", Box.margin_right, 288, speed, Movetype, Easetype, speed)
+	tween.interpolate_property(Box, "margin_top", Box.margin_top, -70, speed, Movetype, Easetype, speed)
+	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, 70, speed, Movetype, Easetype)	
 
 	return 
 	
 	#this should only be used for rotation and that's it, don't be retarded 
-func rotateBoxSet(x1 = 100,y1 = 100, Movetype = 0, Easetype = 3, speed = 0.01):
+func rotateBoxSet(x1 = 100,y1 = 100, Movetype = Tween.TRANS_QUAD, Easetype = Tween.EASE_OUT_IN, speed = 1):
 #	StandardPos()
-	tween.interpolate_property(Box, "margin_left", Box.margin_left, -x1, tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.interpolate_property(Box, "margin_right", Box.margin_right, x1, tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.interpolate_property(Box, "margin_top", Box.margin_top, -y1, tweenMovementStyle[Movetype], eases[Easetype], speed)
-	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, y1, tweenMovementStyle[Movetype], eases[Easetype], speed)	
+	tween.interpolate_property(Box, "margin_left", Box.margin_left, -x1,speed, Movetype, Easetype)
+	tween.interpolate_property(Box, "margin_right", Box.margin_right, x1,speed, Movetype, Easetype)
+	tween.interpolate_property(Box, "margin_top", Box.margin_top, -y1,speed, Movetype, Easetype)
+	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, y1,speed, Movetype, Easetype)	
 
 	return 
 	
 #this is a tween movement, you can also just move the node
-func moveFull(x1 = 320,y1 = 320, Movetype = 0, Easetype = 3, speed = 0.5):
-	tween.interpolate_property(self, "position", position, Vector2(x1,y1), tweenMovementStyle[Movetype], eases[Easetype], speed)
+func moveFull(x1 = 320,y1 = 320, Movetype = 0, Easetype = 3, speed = 2):
+	tween.interpolate_property(self, "position", position, Vector2(x1,y1), speed, tweenMovementStyle[Movetype], eases[Easetype])
 
 
 #sets box col pos 
