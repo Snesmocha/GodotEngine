@@ -14,17 +14,17 @@ var exit = 0
 var items = ["item!","killme","faggot","dumbass","reni cute","kyo femboi", "no seeri", "pubigub pog", "core pog", "underboi p", "russia", "sidoka"]
 
 #player stats
-var lv = 19
+var lv = 1
 onready var health = maxHealth
 var maxHealth = 16 + 4 * lv
 var charName = "frisk"
 
 #master Items List
-
 var label = null
 	
 
-func _physics_process(_delta):
+
+func _process(_delta):
 	Engine.set_target_fps(framerate)
 	if Input.is_action_just_pressed("fullscreen"):
 		fullscreen += 1

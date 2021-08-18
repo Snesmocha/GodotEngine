@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/SliceSoft.ogg-8a75604c1793f7b9e0e3932aacbe5203.oggstr"
+
+[deps]
+
+source_file="res://Audio/SliceSoft.ogg"
+dest_files=[ "res://.import/SliceSoft.ogg-8a75604c1793f7b9e0e3932aacbe5203.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

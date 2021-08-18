@@ -6,43 +6,48 @@
 [ext_resource path="res://Battle Engine/text/bbcodeengines/textblitterMaybe.gd" type="Script" id=4]
 [ext_resource path="res://Battle Engine/text/bbcodeengines/TextEffectGhost.gd" type="Script" id=5]
 [ext_resource path="res://Fonts/determination mono.tres" type="DynamicFont" id=6]
-[ext_resource path="res://trolled (1).mp3" type="AudioStream" id=7]
+[ext_resource path="res://Audio/Typing.ogg" type="AudioStream" id=7]
 
-[sub_resource type="RichTextEffect" id=11]
+[sub_resource type="RichTextEffect" id=1]
 script = ExtResource( 5 )
 
-[sub_resource type="RichTextEffect" id=12]
+[sub_resource type="RichTextEffect" id=2]
 script = ExtResource( 2 )
 
-[sub_resource type="RichTextEffect" id=13]
+[sub_resource type="RichTextEffect" id=3]
 script = ExtResource( 1 )
 
-[sub_resource type="RichTextEffect" id=14]
+[sub_resource type="RichTextEffect" id=4]
 script = ExtResource( 4 )
 
 [node name="TextEngine" type="CanvasLayer"]
 follow_viewport_enable = true
+script = ExtResource( 3 )
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 48.0
-margin_top = 272.0
-margin_right = 592.0
-margin_bottom = 368.0
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Node2D"]
+margin_right = 640.0
+margin_bottom = 472.0
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 6 )
 bbcode_enabled = true
-bbcode_text = "* help me please kanika"
-text = "* help me please kanika"
+bbcode_text = "* nick, eat shoes :)"
+text = "* nick, eat shoes :)"
 scroll_active = false
-custom_effects = [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ]
-script = ExtResource( 3 )
+custom_effects = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Timer" type="Timer" parent="RichTextLabel"]
+[node name="Timer" type="Timer" parent="Node2D/RichTextLabel"]
+pause_mode = 1
 wait_time = 0.01
-autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RichTextLabel"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D/RichTextLabel"]
 stream = ExtResource( 7 )
+
+[node name="PauseTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Node2D/RichTextLabel/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="PauseTimer" to="." method="_on_PauseTimer_timeout"]

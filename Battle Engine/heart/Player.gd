@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 onready var Heart = $PlayerHeart
+onready var shieldRotationPoint = $Position2D
 
 export var max_speed = 75
 export var accel = 200 
@@ -22,6 +23,9 @@ export var state = 0
 #velocity code
 func _physics_process(delta):
 
+	if state != 4:
+		shieldRotationPoint.visible = false
+		
 	debug()
 	match state:
 		0:
@@ -35,6 +39,8 @@ func _physics_process(delta):
 			bluesoul(delta)
 		3:
 			orangesoul(delta)
+		4:
+			greensoul()
 		
 
 
@@ -156,9 +162,6 @@ func bluesoul(delta):
 	velocity = move_and_slide_with_snap(velocity, snapVector, Floor, SlideThreshold)
 	
 
-
-
-
 	#slam system
 	if slam == true:
 		Gravity = maxFallSpeed
@@ -189,7 +192,30 @@ func orangesoul(delta):
 
 	move_and_slide(velocity)
 	velocity = move_and_slide(velocity)
+	
+var directions = 3
+func greensoul():
+	shieldRotationPoint.visible = true
+	Heart.self_modulate = Color(0,1,0)
+	Heart.rotation_degrees = 90
+	
+	
+	if Input.is_action_just_pressed("ui_left"):
+		directions = -1
 		
+	elif Input.is_action_just_pressed("ui_right"):
+		directions = 1
+		
+	elif Input.is_action_just_pressed("ui_up"):
+		directions = 0
+		
+	elif Input.is_action_just_pressed("ui_down"):
+		directions = 2
+	
+	shieldRotationPoint.rotation_degrees += (directions * 90 - shieldRotationPoint.rotation_degrees) * 0.5
+
+
+
 #no you idiot, don't use this
 func debug():
 	if Input.is_key_pressed(KEY_W):

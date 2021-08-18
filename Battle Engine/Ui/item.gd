@@ -51,7 +51,6 @@ func itemMenu():
 				selection = len(Globals.items) - 1
 			
 		#set text and positions
-		emit_signal("text", GetItems())
 		emit_signal("playerPosition", SoulPos[SoulSelection])
 			
 		if Input.is_action_just_pressed("ui_cancel"):
@@ -86,12 +85,6 @@ func GetItems():
 	#sets line and then sets page number
 	for _i in range(0, 2 - lines): list += "\n"
 	list += "                    PAGE " + str(Page + 1)
-	
-	
 	return list
 
 
-func _on_Buttons_button(type):
-	if type == 2:
-		battle.menutext.clear()
-		isEnabled = true

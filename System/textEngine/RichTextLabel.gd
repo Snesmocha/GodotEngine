@@ -1,78 +1,70 @@
-extends RichTextLabel
+extends CanvasLayer
 
-onready var timer = $Timer
-onready var audio = $AudioStreamPlayer
+onready var timer = $Node2D/RichTextLabel/Timer
+onready var audio = $Node2D/RichTextLabel/AudioStreamPlayer
+onready var richText = $Node2D/RichTextLabel
+onready var pauseTimer = $PauseTimer
+onready var speedTimer = $speedChangeTimer
+onready var positioning = $Node2D
 
-var enabled = true
+onready var text = []
+onready var pause = [[10,0.5]]
+onready var sound = [["killmekillme"]]
+onready var speed = [[1,0.01],[5,0.01]]
+onready var font = [[""]]
+onready var skip = [false,0]
+onready var interact = false
+onready var currentPause = 0
+onready var currentspeed = 0
 
-# Called when the node enters the scene tree for the first time.
+var active = true
+
+#the funi start on frame owo
 func _ready():
-	pass
-
-func showDialogue(text:String, pause = [1], pauseTime = [0], changeSpeedPosition = [], changeSpeed = [], speed = 0.1):
-	enabled = true
-	
-	if enabled:
-		timer.start()
-		bbcode_text = "* " + text
-		timer.wait_time = speed
-		percent_visible = 0
-		timer.paused = false
-		var current = 0
-		var speedMoment = 0
-
-		audio.stream_paused = false
-		
-		#will go through all the text within a certain period of time
-		for i in len(text) + 2:
-			self.visible_characters += 1
-			
-			#use the text, not the bbcode, don't be retarded like me
-			if self.visible_characters < len(self.text):
-				audio.play()
-				
-			if self.visible_characters == len(self.text):
-				audio.stop()
-				timer.stop()
-				audio.stream_paused = true
-			
-			yield(timer, "timeout")
-			
-			#checks visible character count to see when to pause the script
-			if visible_characters == pause[current] and len(pause) != 0:
-				timer.paused = true
-				
-				yield(get_tree().create_timer(pauseTime[current]), "timeout")
-				if current < len(pause) - 1:
-					current += 1
-				
-				timer.paused = false
-		
-			if changeSpeed.size() != 0:
-				if visible_characters == changeSpeedPosition[speedMoment] and len(changeSpeedPosition) != 0:
-					timer.wait_time = changeSpeed[speedMoment]
-					
-					if speedMoment < len(changeSpeedPosition) - 1:
-						speedMoment += 1
+	richText.bbcode_text = text[0]
+	timer.start()
+	pause.sort()
+	if skip[0]:
+		richText.visible_characters = len(richText.text)
 	else:
-		timer.stop()
-
-
-func instant(text:String):
-	bbcode_text = "* " + text
+		richText.visible_characters = 0
 	
-func instaPrint():
-	timer.stop()
-	self.percent_visible = 1.0
-	audio.stop()
-	audio.stream_paused = true
-	enabled = false
+func _process(delta):
+	
+	if active:
+		richText.bbcode_text = text[0]
+		active = false
+	
 
-func clear():
-	enabled = false
-	bbcode_text = ""
-	instaPrint()
+#text continuation and pausing system
+func _on_Timer_timeout():
+	if richText.visible_characters < len(richText.text):
+		richText.visible_characters += 1
+		if richText.text and richText.text[richText.visible_characters - 1] != "":
+			if sound[0][0] != "":
+				#reminder, add code that can change audio types depending on specific audio chosen 
+				audio.play()
+		
+		#checks for pasueposition then pauses text accoring to how long the pause timer has been set
+		if richText.visible_characters == pause[currentPause][0]:
+			timer.stop()
+			pauseTimer.start(pause[currentPause][1])
+			
+		if richText.visible_characters == speed[currentspeed][0]:
+			print(timer.wait_time)
+			timer.start(speed[currentspeed][1])
+			if currentspeed < len(speed) - 1:
+				currentspeed += 1
 
 
-func _on_item_text(TextValue):
-	bbcode_text = TextValue
+#pause system, i want to fucking dieeeeeeeeeeeeeeeeeeeeeeeeeeee
+func _on_PauseTimer_timeout():
+	if currentPause < len(pause) - 1:
+		currentPause += 1
+	
+	pauseTimer.stop()
+	timer.start()
+
+
+
+

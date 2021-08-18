@@ -5,13 +5,15 @@
 [node name="NinePatchRect" type="NinePatchRect"]
 margin_left = -20.0
 margin_top = -3.0
-margin_right = 54.0
-margin_bottom = 3.0
+margin_right = 50.0
+margin_bottom = 80.0
 rect_rotation = -90.0
 rect_pivot_offset = Vector2( 20, 3 )
 texture = ExtResource( 1 )
 patch_margin_left = 6
 patch_margin_right = 6
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

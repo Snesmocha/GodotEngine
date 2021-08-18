@@ -37,6 +37,7 @@ func rotateBoxSet(x1 = 100,y1 = 100, Movetype = Tween.TRANS_QUAD, Easetype = Twe
 	tween.interpolate_property(Box, "margin_right", Box.margin_right, x1,speed, Movetype, Easetype)
 	tween.interpolate_property(Box, "margin_top", Box.margin_top, -y1,speed, Movetype, Easetype)
 	tween.interpolate_property(Box, "margin_bottom", Box.margin_bottom, y1,speed, Movetype, Easetype)	
+	tween.start()
 
 	return 
 	
@@ -75,9 +76,3 @@ func _physics_process(_delta: float) -> void:
 
 var changeSize = false
 
-func box_changeSize():
-	return tween.start()
-
-
-
-	

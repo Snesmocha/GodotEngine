@@ -14,10 +14,11 @@ func _process(delta):
 	
 	for i in get_children():
 		i.visible = Active
-	Debug.bbcode_text = "null"
+	
 	
 
 func _ready():
+	Debug.bbcode_text = "null"
 	
 	if Destroy == true:
 		for i in get_children():
